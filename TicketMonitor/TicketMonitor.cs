@@ -10,16 +10,33 @@ using System.Windows.Forms;
 
 namespace TicketMonitor
 {
-    public partial class ticketMonitorFrame : Form
+    internal partial class ticketMonitorFrame : Form
     {
-        public ticketMonitorFrame()
+
+        private string url = "https://helpdesk.msu.montana.edu/helpdesk/WebObjects/Helpdesk.woa";
+        
+
+        internal ticketMonitorFrame()
         {
             InitializeComponent();
+            
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        void ticketMonitorFrame_FormClosed(object sender, FormClosedEventArgs e)
         {
-
+            Application.Exit();
         }
+
+        private void TicketMonitorFrame_Load(object sender, EventArgs e)
+        {
+            API api = new API(); //Creates class that manages the API.
+            api.postCredentialsandGetSessionKey();
+        }
+
+        internal void updateText(string inString)
+        {
+            monitorOutputTextBox.Text += inString + Environment.NewLine;
+        }
+        
     }
 }

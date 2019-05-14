@@ -65,7 +65,7 @@
             // manualRefreshToolStripMenuItem
             // 
             this.manualRefreshToolStripMenuItem.Name = "manualRefreshToolStripMenuItem";
-            this.manualRefreshToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.manualRefreshToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.manualRefreshToolStripMenuItem.Text = "Manual Refresh";
             // 
             // monitorOutputTextBox
@@ -88,7 +88,6 @@
             this.progressbarLabel.Size = new System.Drawing.Size(84, 17);
             this.progressbarLabel.TabIndex = 3;
             this.progressbarLabel.Text = "Refresh Bar";
-            this.progressbarLabel.Click += new System.EventHandler(this.label1_Click);
             // 
             // ticketMonitorFrame
             // 
@@ -103,6 +102,8 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "ticketMonitorFrame";
             this.Text = "Ticket Monitor";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ticketMonitorFrame_FormClosed);
+            this.Load += new System.EventHandler(this.TicketMonitorFrame_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);

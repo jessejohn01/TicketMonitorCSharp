@@ -16,7 +16,9 @@ namespace TicketMonitor
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new loginFrame());
+            Application.Run(new programPackage());
+
+
         }
     }
 }
