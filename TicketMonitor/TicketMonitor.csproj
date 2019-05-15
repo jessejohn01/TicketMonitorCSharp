@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API.cs" />
+    <Compile Include="option.cs" />
     <Compile Include="programPackage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -73,6 +74,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="refresh.cs" />
     <Compile Include="TicketMonitor.cs">
       <SubType>Form</SubType>
     </Compile>

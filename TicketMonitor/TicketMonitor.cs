@@ -12,9 +12,11 @@ namespace TicketMonitor
 {
     internal partial class ticketMonitorFrame : Form
     {
-        //push
+        
         private string url = "https://helpdesk.msu.montana.edu/helpdesk/WebObjects/Helpdesk.woa";
         API apiSession = new API(); //Creates class that manages the API.
+        option optionSettings = new option();
+        refresh background = new refresh();
 
         internal ticketMonitorFrame()
         {
@@ -36,6 +38,9 @@ namespace TicketMonitor
             {
                 debugGet.Show();
             }
+            background.start();
+
+
         }
 
         internal void updateText(string inString)
@@ -46,6 +51,48 @@ namespace TicketMonitor
         private void DebugGet_Click(object sender, EventArgs e)
         {
             apiSession.getRequest(url + "/ra/Tickets/1");
+        }
+
+        internal void updateProgress(int newTotal)
+        {
+            try
+            {
+                Invoke(new Action(() =>
+                {
+                    progressBar.Value = newTotal;
+                    progressBar.Update();
+                }));
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        internal int progressBarMax()
+        {
+            return progressBar.Maximum;
+        }
+
+        private void OptionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //=======================SETUP==============================
+            optionPanel.BringToFront();
+            optionPanel.Show();
+            refreshTime.SelectedItem = optionSettings.refreshTimeOption;
+            ///
+        }
+
+        private void OptionSaveButton_Click(object sender, EventArgs e)
+        {
+            updateOptions();
+            optionPanel.Hide();
+            
+        }
+
+        private void updateOptions()
+        {
+            optionSettings.refreshTimeOption = refreshTime.SelectedItem.ToString();
         }
     }
 }
