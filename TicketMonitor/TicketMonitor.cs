@@ -14,11 +14,12 @@ namespace TicketMonitor
     {
 
         private string url = "https://helpdesk.msu.montana.edu/helpdesk/WebObjects/Helpdesk.woa";
-        
+        API apiSession = new API(); //Creates class that manages the API.
 
         internal ticketMonitorFrame()
         {
             InitializeComponent();
+            debugGet.Hide();
             
         }
 
@@ -29,14 +30,22 @@ namespace TicketMonitor
 
         private void TicketMonitorFrame_Load(object sender, EventArgs e)
         {
-            API api = new API(); //Creates class that manages the API.
-            api.postCredentialsandGetSessionKey();
+
+            apiSession.postCredentialsandGetSessionKey();
+            if(programPackage.user.getUsername() == "yaBoi") //Secret debugging user.
+            {
+                debugGet.Show();
+            }
         }
 
         internal void updateText(string inString)
         {
             monitorOutputTextBox.Text += inString + Environment.NewLine;
         }
-        
+
+        private void DebugGet_Click(object sender, EventArgs e)
+        {
+            apiSession.getRequest(url + "/ra/Tickets/1");
+        }
     }
 }

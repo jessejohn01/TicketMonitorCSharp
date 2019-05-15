@@ -7,53 +7,36 @@ using System.Net;
 using System.Web;
 using System.IO;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace TicketMonitor
 {
     class API
     {
-        private static string startUrl = "https://helpdesk.msu.montana.edu/helpdesk/WebObjects/Helpdesk.woa"; //
+        private static string startUrl = "https://helpdesk.msu.montana.edu/helpdesk/WebObjects/Helpdesk.woa";
         WebRequest web = WebRequest.Create(startUrl); //Creates a web request.
         HttpWebResponse response = null; // Sets response in memory
+        private string sessionKey;
+        XmlDocument xml = new XmlDocument();
+        
         internal API() //Constructor for our API
         {
-           /* WebRequest web = WebRequest.Create(url); //Creates a web request.
-            web.Method = "GET"; //This particular request is a GET
-            HttpWebResponse response = null; // Sets response in memory
-            response = (HttpWebResponse) web.GetResponse(); // Stores the response from the web request into response.
-
-            using (Stream stream = response.GetResponseStream()) // Creates a stream of from the response of the request
-            {
-                StreamReader reader = new StreamReader(stream); //Reader then reads the stream 
-                string results = reader.ReadToEnd(); // Outputs to a string
-
-                programPackage.monitor.updateText("This is a message.");
-                programPackage.monitor.updateText("This is also a message");
-                programPackage.monitor.updateText(results);
-                reader.Close(); // Close our stream reader.
-
-
-
-            } */
 
         }
 
         internal void getRequest(string url) //method to run a get on the API's url.
         {
-            web = WebRequest.Create(url);
-            web.Method = "GET"; //This particular request is a GET
-            
-            response = (HttpWebResponse)web.GetResponse(); // Stores the response from the web request into response.
-
-            using (Stream stream = response.GetResponseStream()) // Creates a stream of from the response of the request
+            try
             {
-                StreamReader reader = new StreamReader(stream); //Reader then reads the stream 
-                string results = reader.ReadToEnd(); // Outputs to a string
-                //programPackage.monitor.updateText(results);
-                reader.Close(); // Close our stream reader.
+                web = WebRequest.Create(url + ".xml?apiKey=" + programPackage.user.getapiKey());
+                web.Method = "GET";
+                response = (HttpWebResponse)web.GetResponse();
+                gatherData();
 
-
-
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("An error occured requesting your data");
             }
         }
 
@@ -61,31 +44,52 @@ namespace TicketMonitor
         {
 
         }
-        internal void postCredentialsandGetSessionKey()
+        internal void postCredentialsandGetSessionKey() // THis method posts credientials and grabs a session key.
         {
-
             try
             {
-                web = WebRequest.Create("http://helpdesk.msu.montana.edu/helpdesk/WebObjects/Helpdesk.woa/ra/Ticket/1?apiKey=" + programPackage.user.getapiKey());
+                web = WebRequest.Create("http://helpdesk.msu.montana.edu/helpdesk/WebObjects/Helpdesk.woa/ra/Session.xml?apiKey=" + programPackage.user.getapiKey()); //Grabs xml with session key
                 web.Method = "GET";
 
                 response = (HttpWebResponse)web.GetResponse(); // Stores the response from the web request into response.
 
-                using (Stream stream = response.GetResponseStream()) // Creates a stream of from the response of the request
-                {
-                    StreamReader reader = new StreamReader(stream); //Reader then reads the stream 
-                    string results = reader.ReadToEnd(); // Outputs to a string
-                    programPackage.monitor.updateText(results);
-                    reader.Close(); // Close our stream reader.
+                gatherData();
 
-
-                }
             }
-            catch(Exception e)
+            catch (Exception)
             {
                 MessageBox.Show("Incorrect Credientials.");
             }
 
+
+            try
+            {
+                var nodes = xml.SelectNodes("Session/sessionKey");
+                foreach (XmlElement node in nodes)
+                {
+                    sessionKey = node.InnerText;
+                }
+
+                programPackage.monitor.updateText("Your session key is: " + sessionKey);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("An error has occured aquiring your session key.");
+            }
+        }
+
+        private void gatherData() //This function opens a stream with the class' web and response types.
+        {
+            using (Stream stream = response.GetResponseStream())
+            {
+                StreamReader reader = new StreamReader(stream);
+                string results = reader.ReadToEnd();
+                Console.WriteLine(results);
+                xml.LoadXml(results);
+                reader.Close();
+
+
+            }
         }
 
     }

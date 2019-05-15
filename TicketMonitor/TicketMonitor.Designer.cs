@@ -34,6 +34,7 @@
             this.manualRefreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.monitorOutputTextBox = new System.Windows.Forms.RichTextBox();
             this.progressbarLabel = new System.Windows.Forms.Label();
+            this.debugGet = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -89,12 +90,23 @@
             this.progressbarLabel.TabIndex = 3;
             this.progressbarLabel.Text = "Refresh Bar";
             // 
+            // debugGet
+            // 
+            this.debugGet.Location = new System.Drawing.Point(33, 412);
+            this.debugGet.Name = "debugGet";
+            this.debugGet.Size = new System.Drawing.Size(75, 23);
+            this.debugGet.TabIndex = 4;
+            this.debugGet.Text = "Get Ticket 1";
+            this.debugGet.UseVisualStyleBackColor = true;
+            this.debugGet.Click += new System.EventHandler(this.DebugGet_Click);
+            // 
             // ticketMonitorFrame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SteelBlue;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.debugGet);
             this.Controls.Add(this.progressbarLabel);
             this.Controls.Add(this.monitorOutputTextBox);
             this.Controls.Add(this.progressBar1);
@@ -119,5 +131,6 @@
         private System.Windows.Forms.ToolStripMenuItem manualRefreshToolStripMenuItem;
         private System.Windows.Forms.RichTextBox monitorOutputTextBox;
         private System.Windows.Forms.Label progressbarLabel;
+        private System.Windows.Forms.Button debugGet;
     }
 }
