@@ -15,7 +15,7 @@ namespace TicketMonitor
         
         private string url = "https://helpdesk.msu.montana.edu/helpdesk/WebObjects/Helpdesk.woa";
         API apiSession = new API(); //Creates class that manages the API.
-        option optionSettings = new option();
+        internal option optionSettings = new option();
         refresh background = new refresh();
 
         internal ticketMonitorFrame()
@@ -74,6 +74,24 @@ namespace TicketMonitor
             return progressBar.Maximum;
         }
 
+        internal void setProgressBarMax(int inMiliseconds)
+        {
+
+            try
+            {
+                Invoke(new Action(() =>
+                {
+                    progressBar.Maximum = inMiliseconds;
+                    progressBar.Update();
+                }));
+            }
+            catch (Exception)
+            {
+
+            }
+
+        }
+
         private void OptionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //=======================SETUP==============================
@@ -87,6 +105,9 @@ namespace TicketMonitor
         {
             updateOptions();
             optionPanel.Hide();
+            background.stop();
+            background = new refresh();
+            background.start();
             
         }
 

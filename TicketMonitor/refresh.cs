@@ -16,6 +16,7 @@ namespace TicketMonitor
         internal refresh()
         {
             worker.WorkerReportsProgress = true;
+            worker.WorkerSupportsCancellation = true;
 
         }
 
@@ -23,15 +24,43 @@ namespace TicketMonitor
         {
             worker.DoWork += worker_DoWork;
             worker.RunWorkerCompleted += worker_RunWorkerCompleted;
-            worker.RunWorkerAsync();
+            if (!worker.IsBusy)
+            {
+                worker.RunWorkerAsync();
+            }
         }
            
         private void worker_DoWork(object sender, DoWorkEventArgs e) //This worker loads in the tickets.
-        {   for(int i = 0; i < programPackage.monitor.progressBarMax(); i++) //Wait for 5 minutes and then refresh.
+        {
+            int miliseconds;
+
+            switch (programPackage.monitor.optionSettings.refreshTimeOption)
+            {
+                case "One Minute":
+                    miliseconds = 60000;
+                    break;
+                case "Five Minutes":
+                    miliseconds = 300000;
+                    break;
+                case "Ten Minutes":
+                    miliseconds = 600000;
+                    break;
+                default:
+                    miliseconds = 300000;
+                    break;
+            }
+
+            programPackage.monitor.setProgressBarMax(miliseconds);
+
+            for (int i = 0; i < programPackage.monitor.progressBarMax(); i++) //Wait for 5 minutes and then refresh.
             {
                 Thread.Sleep(1);
                 progressBarTotal++;
                 programPackage.monitor.updateProgress(progressBarTotal);
+                if (worker.CancellationPending) //Checks to see if we need to kill the thread.
+                {
+                    break;
+                }
             }
 
             //Do work here.
@@ -45,7 +74,16 @@ namespace TicketMonitor
         {
             progressBarTotal = 0;
             programPackage.monitor.updateProgress(progressBarTotal);
-            worker.RunWorkerAsync();
+            if (!worker.IsBusy)
+            {
+                worker.RunWorkerAsync();
+            }
+        }
+
+        internal void stop()
+        {
+            worker.CancelAsync();
+            GC.Collect(); //manual garbage collection!
         }
     }
 }
