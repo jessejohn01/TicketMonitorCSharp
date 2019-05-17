@@ -22,6 +22,7 @@ namespace TicketMonitor
         {
             InitializeComponent();
             debugGet.Hide();
+            getHelpDeskOpen.Hide();
             
         }
 
@@ -37,6 +38,7 @@ namespace TicketMonitor
             if(programPackage.user.getUsername() == "yaBoi") //Secret debugging user.
             {
                 debugGet.Show();
+                getHelpDeskOpen.Show();
             }
             background.start();
 
@@ -48,10 +50,6 @@ namespace TicketMonitor
             monitorOutputTextBox.Text += inString + Environment.NewLine;
         }
 
-        private void DebugGet_Click(object sender, EventArgs e)
-        {
-            apiSession.getRequest(url + "/ra/Tickets/1");
-        }
 
         internal void updateProgress(int newTotal)
         {
@@ -60,7 +58,6 @@ namespace TicketMonitor
                 Invoke(new Action(() =>
                 {
                     progressBar.Value = newTotal;
-                    Console.WriteLine(newTotal);
                     progressBar.Update();
                 }));
             }
@@ -93,36 +90,46 @@ namespace TicketMonitor
 
         }
 
-        private void OptionsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //=======================SETUP==============================
-            optionPanel.BringToFront();
-            optionPanel.Show();
-            refreshTime.SelectedItem = optionSettings.refreshTimeOption;
-            ///
-        }
-
-        private void OptionSaveButton_Click(object sender, EventArgs e)
-        {
-            updateOptions();
-            optionPanel.Hide();
-            background.stop();
-            background = new refresh();
-            background.start();
-            
-        }
 
         private void updateOptions()
         {
             optionSettings.refreshTimeOption = refreshTime.SelectedItem.ToString();
         }
 
-        private void ManualRefreshToolStripMenuItem_Click(object sender, EventArgs e)
+
+        // TO DO RENAME ALL THIS.
+        private void OptionsToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            refreshTime.SelectedItem = optionSettings.refreshTimeOption;
+            pages.SelectedTab = tabPage2;
+            Console.WriteLine("Here");
+        }
+
+        private void OptionSaveButton_Click_1(object sender, EventArgs e)
+        {
+            updateOptions();
+            pages.SelectedTab = tabPage1;
+            background.stop();
+            background = new refresh();
+            background.start();
+        }
+
+        private void ManualRefreshToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             background.stop();
             background = new refresh();
             background.start();
             updateText("Manual Refresh Initiated.");
+        }
+
+        private void DebugGet_Click_1(object sender, EventArgs e)
+        {
+            apiSession.getRequest(url + "/ra/Tickets/1");
+        }
+
+        private void GetHelpDeskOpen_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
