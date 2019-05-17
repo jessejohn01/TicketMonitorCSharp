@@ -32,29 +32,29 @@ namespace TicketMonitor
            
         private void worker_DoWork(object sender, DoWorkEventArgs e) //This worker loads in the tickets.
         {
-            int miliseconds;
+            int seconds;
 
             switch (programPackage.monitor.optionSettings.refreshTimeOption)
             {
                 case "One Minute":
-                    miliseconds = 60000;
+                    seconds = 60;
                     break;
                 case "Five Minutes":
-                    miliseconds = 300000;
+                    seconds = 300;
                     break;
                 case "Ten Minutes":
-                    miliseconds = 600000;
+                    seconds = 600;
                     break;
                 default:
-                    miliseconds = 300000;
+                    seconds = 300;
                     break;
             }
 
-            programPackage.monitor.setProgressBarMax(miliseconds);
+            programPackage.monitor.setProgressBarMax(seconds);
 
             for (int i = 0; i < programPackage.monitor.progressBarMax(); i++) //Wait for 5 minutes and then refresh.
             {
-                Thread.Sleep(1);
+                Thread.Sleep(1000);
                 progressBarTotal++;
                 programPackage.monitor.updateProgress(progressBarTotal);
                 if (worker.CancellationPending) //Checks to see if we need to kill the thread.
@@ -85,5 +85,7 @@ namespace TicketMonitor
             worker.CancelAsync();
             GC.Collect(); //manual garbage collection!
         }
+
+
     }
 }

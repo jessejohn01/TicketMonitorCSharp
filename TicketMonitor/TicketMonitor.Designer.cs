@@ -75,8 +75,9 @@
             // manualRefreshToolStripMenuItem
             // 
             this.manualRefreshToolStripMenuItem.Name = "manualRefreshToolStripMenuItem";
-            this.manualRefreshToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.manualRefreshToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.manualRefreshToolStripMenuItem.Text = "Manual Refresh";
+            this.manualRefreshToolStripMenuItem.Click += new System.EventHandler(this.ManualRefreshToolStripMenuItem_Click);
             // 
             // optionsToolStripMenuItem
             // 

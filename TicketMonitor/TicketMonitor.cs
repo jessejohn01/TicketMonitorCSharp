@@ -60,6 +60,7 @@ namespace TicketMonitor
                 Invoke(new Action(() =>
                 {
                     progressBar.Value = newTotal;
+                    Console.WriteLine(newTotal);
                     progressBar.Update();
                 }));
             }
@@ -74,14 +75,14 @@ namespace TicketMonitor
             return progressBar.Maximum;
         }
 
-        internal void setProgressBarMax(int inMiliseconds)
+        internal void setProgressBarMax(int inSeconds)
         {
 
             try
             {
                 Invoke(new Action(() =>
                 {
-                    progressBar.Maximum = inMiliseconds;
+                    progressBar.Maximum = inSeconds;
                     progressBar.Update();
                 }));
             }
@@ -114,6 +115,14 @@ namespace TicketMonitor
         private void updateOptions()
         {
             optionSettings.refreshTimeOption = refreshTime.SelectedItem.ToString();
+        }
+
+        private void ManualRefreshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            background.stop();
+            background = new refresh();
+            background.start();
+            updateText("Manual Refresh Initiated.");
         }
     }
 }
