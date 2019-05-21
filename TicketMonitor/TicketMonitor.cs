@@ -129,7 +129,7 @@ namespace TicketMonitor
 
         private void GetHelpDeskOpen_Click(object sender, EventArgs e)
         {
-
+            apiSession.getRequest(url + "/ra/Tickets.xml?limit=100&qualifier=(clientTech.clientId%3D312)"); //API class will add a trailing &apiKey=****
         }
     }
 }

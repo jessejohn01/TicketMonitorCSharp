@@ -28,10 +28,14 @@ namespace TicketMonitor
         {
             try
             {
-                web = WebRequest.Create(url + ".xml?apiKey=" + programPackage.user.getapiKey());
+                web = WebRequest.Create(url + "&apiKey=" + programPackage.user.getapiKey());
                 web.Method = "GET";
                 response = (HttpWebResponse)web.GetResponse();
                 gatherData();
+
+                    programPackage.monitor.updateText(xml.OuterXml);
+
+
 
             }
             catch (Exception)
