@@ -123,6 +123,7 @@ namespace TicketMonitor
             background.stop();
             background = new refresh();
             background.start();
+            updateProgress(0);
         }
 
         private void ManualRefreshToolStripMenuItem_Click_1(object sender, EventArgs e)//Click the manual refresh button up top.
