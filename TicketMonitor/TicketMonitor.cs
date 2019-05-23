@@ -55,9 +55,9 @@ namespace TicketMonitor
                     monitorOutputTextBox.Text += inString + Environment.NewLine;
                 }));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
+                Console.WriteLine(e);
             }
         }
 
@@ -72,9 +72,9 @@ namespace TicketMonitor
                     progressBar.Update();
                 }));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
+                Console.WriteLine(e);
             }
         }
 
@@ -94,9 +94,9 @@ namespace TicketMonitor
                     progressBar.Update();
                 }));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
+                Console.WriteLine(e);
             }
 
         }
@@ -113,7 +113,6 @@ namespace TicketMonitor
         {
             refreshTime.SelectedItem = optionSettings.refreshTimeOption;
             pages.SelectedTab = tabPage2;
-            Console.WriteLine("Here");
         }
 
         private void OptionSaveButton_Click_1(object sender, EventArgs e)//Click the option menu's save button.
@@ -136,11 +135,14 @@ namespace TicketMonitor
 
         private void DebugGet_Click_1(object sender, EventArgs e)// Click debugging button. Needs debugging username to see.
         {
-            apiSession.getRequest(url + "/ra/Tickets/1");
+            clearText();
+            apiSession.getRequest(url + "/ra/Tickets/1.xml?");
+
         }
 
         private void GetHelpDeskOpen_Click(object sender, EventArgs e) // Click other debugging button. Needs username to see
         {
+            clearText();
             apiSession.getRequest(url + "/ra/Tickets.xml?list=group&qualifier=(statustype.listFilterType%3D1)"); //API class will add a trailing &apiKey=****
         }
 
@@ -170,9 +172,9 @@ namespace TicketMonitor
                     monitorOutputTextBox.Clear();
                 }));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
+                Console.WriteLine(e);
             }
         }
     }

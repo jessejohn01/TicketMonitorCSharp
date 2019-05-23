@@ -39,16 +39,17 @@ namespace TicketMonitor
 
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 MessageBox.Show("An error occured requesting your data");
+                Console.WriteLine(e);
             }
 
             programPackage.monitor.printXML(xml);
         }
 
 
-        internal void postRequest(string url, string postData)
+        internal void postRequest(string url, string postData) //Unused currently.
         {
 
         }
@@ -64,9 +65,10 @@ namespace TicketMonitor
                 gatherData();
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 MessageBox.Show("Incorrect Credientials.");
+                Console.WriteLine(e);
             }
 
 
@@ -80,9 +82,10 @@ namespace TicketMonitor
 
                 programPackage.monitor.updateText("Your session key is: " + sessionKey);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 MessageBox.Show("An error has occured aquiring your session key.");
+                Console.WriteLine(e);
             }
         }
 
@@ -92,7 +95,6 @@ namespace TicketMonitor
             {
                 StreamReader reader = new StreamReader(stream);
                 string results = reader.ReadToEnd();
-                Console.WriteLine(results);
                 xml.LoadXml(results);
                 reader.Close();
 
