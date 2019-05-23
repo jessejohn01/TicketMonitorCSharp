@@ -66,6 +66,9 @@
   <ItemGroup>
     <Compile Include="API.cs" />
     <Compile Include="option.cs" />
+    <Compile Include="PageControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="programPackage.cs">
       <SubType>Form</SubType>
     </Compile>

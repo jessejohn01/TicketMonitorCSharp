@@ -16,6 +16,7 @@ namespace TicketMonitor
         internal refresh()
         {
             worker.WorkerReportsProgress = true;
+            worker.WorkerSupportsCancellation = true;
 
         }
 
@@ -23,29 +24,72 @@ namespace TicketMonitor
         {
             worker.DoWork += worker_DoWork;
             worker.RunWorkerCompleted += worker_RunWorkerCompleted;
-            worker.RunWorkerAsync();
+            if (!worker.IsBusy)
+            {
+                worker.RunWorkerAsync();
+            }
         }
            
         private void worker_DoWork(object sender, DoWorkEventArgs e) //This worker loads in the tickets.
-        {   for(int i = 0; i < programPackage.monitor.progressBarMax(); i++) //Wait for 5 minutes and then refresh.
+        {
+            int seconds;
+
+            programPackage.monitor.apiSession.getRequest(programPackage.monitor.url + "/ra/Tickets.xml?list=group&qualifier=(statustype.listFilterType%3D1)");
+            switch (programPackage.monitor.optionSettings.refreshTimeOption)
             {
-                Thread.Sleep(1);
+                case "One Minute":
+                    seconds = 60;
+                    break;
+                case "Five Minutes":
+                    seconds = 300;
+                    break;
+                case "Ten Minutes":
+                    seconds = 600;
+                    break;
+                default:
+                    seconds = 300;
+                    break;
+            }
+
+            programPackage.monitor.setProgressBarMax(seconds);
+
+            for (int i = 0; i < programPackage.monitor.progressBarMax(); i++) //Wait for 5 minutes and then refresh.
+            {
+                Thread.Sleep(1000);
                 progressBarTotal++;
                 programPackage.monitor.updateProgress(progressBarTotal);
+                if (worker.CancellationPending) //Checks to see if we need to kill the thread.
+                {
+                    break;
+                }
             }
 
             //Do work here.
-            Console.Write(progressBarTotal);
 
             
-            
+
+
         }
 
         private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             progressBarTotal = 0;
             programPackage.monitor.updateProgress(progressBarTotal);
-            worker.RunWorkerAsync();
+
+           
+            if (!worker.IsBusy)
+            {
+                programPackage.monitor.clearText();
+                worker.RunWorkerAsync();
+            }
         }
+
+        internal void stop()
+        {
+            worker.CancelAsync();
+            GC.Collect(); //manual garbage collection!
+        }
+
+
     }
 }

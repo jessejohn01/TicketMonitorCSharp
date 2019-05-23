@@ -25,9 +25,10 @@ namespace TicketMonitor
             //Will store credentials in the user class.
             user.setUsername(userNameField.Text);
             user.setapiKey(apiKeyField.Text);
-            monitor.updateText("Using " + user.getUsername() + " as the username.");
             monitor.Show();
             this.Hide();
+            monitor.updateText("Using " + user.getUsername() + " as the username.");
+
         }
 
 

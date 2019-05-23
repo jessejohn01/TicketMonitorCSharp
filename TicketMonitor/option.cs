@@ -9,8 +9,7 @@ namespace TicketMonitor
     class option
     {
         internal string refreshTimeOption { get; set; }
-        
-        
+        internal int refreshTimeSeconds { get; set; }        
         internal option()
         {
             refreshTimeOption = "Five Minutes";
