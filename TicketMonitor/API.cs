@@ -33,7 +33,8 @@ namespace TicketMonitor
                 response = (HttpWebResponse)web.GetResponse();
                 gatherData();
 
-                    programPackage.monitor.updateText(xml.OuterXml);
+
+                    //programPackage.monitor.updateText(response.write(xml.OuterXml));
 
 
 
@@ -42,7 +43,10 @@ namespace TicketMonitor
             {
                 MessageBox.Show("An error occured requesting your data");
             }
+
+            programPackage.monitor.printXML(xml);
         }
+
 
         internal void postRequest(string url, string postData)
         {

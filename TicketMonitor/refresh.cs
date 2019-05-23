@@ -34,6 +34,7 @@ namespace TicketMonitor
         {
             int seconds;
 
+            programPackage.monitor.apiSession.getRequest(programPackage.monitor.url + "/ra/Tickets.xml?list=group&qualifier=(statustype.listFilterType%3D1)");
             switch (programPackage.monitor.optionSettings.refreshTimeOption)
             {
                 case "One Minute":
@@ -64,18 +65,21 @@ namespace TicketMonitor
             }
 
             //Do work here.
-            Console.Write(progressBarTotal);
 
             
-            
+
+
         }
 
         private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             progressBarTotal = 0;
             programPackage.monitor.updateProgress(progressBarTotal);
+
+           
             if (!worker.IsBusy)
             {
+                programPackage.monitor.clearText();
                 worker.RunWorkerAsync();
             }
         }
