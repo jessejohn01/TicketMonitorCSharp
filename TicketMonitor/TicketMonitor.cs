@@ -35,7 +35,7 @@ namespace TicketMonitor
         private void TicketMonitorFrame_Load(object sender, EventArgs e)//Upon loading the main window.
         {
 
-            apiSession.postCredentialsandGetSessionKey();
+            //apiSession.postCredentialsandGetSessionKey();
             if(programPackage.user.getUsername() == "yaBoi") //Secret debugging user.
             {
                 debugGet.Show();
@@ -135,15 +135,16 @@ namespace TicketMonitor
 
         private void DebugGet_Click_1(object sender, EventArgs e)// Click debugging button. Needs debugging username to see.
         {
-            clearText();
-            apiSession.getRequest(url + "/ra/Tickets/1.xml?");
+            //clearText();
+            apiSession.getOpenHelpDeskTickets();          
 
         }
+
 
         private void GetHelpDeskOpen_Click(object sender, EventArgs e) // Click other debugging button. Needs username to see
         {
             clearText();
-            apiSession.getRequest(url + "/ra/Tickets.xml?list=group&qualifier=(statustype.listFilterType%3D1)"); //API class will add a trailing &apiKey=****
+            //apiSession.getRequest(url + "/ra/Tickets.xml?list=group&qualifier=(statustype.listFilterType%3D1)"); //API class will add a trailing &apiKey=****
         }
 
         internal void printXML(XmlDocument inXML)//class to format and print an xml document to monitorOutputTextBox.
