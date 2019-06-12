@@ -68,7 +68,7 @@ namespace TicketMonitor
         {
             try
             {
-                web = WebRequest.Create(startUrl + "/ra/Tickets.xml?list=group&qualifier=(statustype.listFilterType%3D1)&apiKey=" + programPackage.user.getapiKey());
+                web = WebRequest.Create(startUrl + "/ra/Tickets.xml?list=group&limit=100&qualifier=(statustype.listFilterType%3D1)&apiKey=" + programPackage.user.getapiKey());
                 web.Method = "GET";
                 response = (HttpWebResponse)web.GetResponse();
 
