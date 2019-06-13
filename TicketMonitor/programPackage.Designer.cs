@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 
 namespace TicketMonitor
 {
@@ -66,6 +67,7 @@ namespace TicketMonitor
             this.apiKeyField.PasswordChar = '*';
             this.apiKeyField.Size = new System.Drawing.Size(225, 20);
             this.apiKeyField.TabIndex = 2;
+            this.apiKeyField.Paste(Clipboard.GetText());
             // 
             // usernameLabel
             // 
