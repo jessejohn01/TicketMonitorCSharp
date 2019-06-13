@@ -17,6 +17,7 @@ namespace TicketMonitor
         internal programPackage()
         {
             InitializeComponent();
+            this.apiKeyField.Paste(Clipboard.GetText());
 
         }
 
