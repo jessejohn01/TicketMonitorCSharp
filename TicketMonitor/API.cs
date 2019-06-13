@@ -17,7 +17,12 @@ namespace TicketMonitor
         WebRequest web = WebRequest.Create(startUrl); //Creates a web request.
         HttpWebResponse response = null; // Sets response in memory
         private string sessionKey;
-        XmlDocument xml = new XmlDocument();
+        internal XmlDocument xml = new XmlDocument();
+        internal XmlDocument compareXML = new XmlDocument();
+        internal bool isFirstXmlLoaded = false;
+
+        internal Queue<XmlDocument> xmlQueue = new Queue<XmlDocument>();//Creates a stack for our xml documents.
+
         
         internal API() //Constructor for our API
         {
@@ -31,9 +36,19 @@ namespace TicketMonitor
                 web = WebRequest.Create(url + "&apiKey=" + programPackage.user.getapiKey());
                 web.Method = "GET";
                 response = (HttpWebResponse)web.GetResponse();
-                gatherData();
+
+                if(isFirstXmlLoaded == false)
+                {
+                    xml = gatherData();
+                    isFirstXmlLoaded = true;
+                }
+                else
+                {
+                    compareXML = gatherData();
+                }
 
 
+                
                     //programPackage.monitor.updateText(response.write(xml.OuterXml));
 
 
@@ -45,7 +60,46 @@ namespace TicketMonitor
                 Console.WriteLine(e);
             }
 
-            programPackage.monitor.printXML(xml);
+            //programPackage.monitor.printXML(xml);
+        }
+
+
+        internal void getOpenHelpDeskTickets() //Will grab all open help desk tickets by group.
+        {
+            try
+            {
+                web = WebRequest.Create(startUrl + "/ra/Tickets.xml?list=group&limit=100&qualifier=(statustype.listFilterType%3D1)&apiKey=" + programPackage.user.getapiKey());
+                web.Method = "GET";
+                response = (HttpWebResponse)web.GetResponse();
+
+                if (isFirstXmlLoaded == false)
+                {
+                    xml = gatherData();
+                    isFirstXmlLoaded = true;
+                }
+                else
+                {
+                    compareXML = gatherData();
+                }
+
+
+
+                //programPackage.monitor.updateText(response.write(xml.OuterXml));
+
+
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("An error occured requesting your data.");
+                Console.WriteLine(e);
+                Application.Exit();
+            }
+
+            //Console.WriteLine(xml.OuterXml);
+            //programPackage.monitor.updateText("Just before enqueue");
+            //xmlQueue.Enqueue(xml);
+            //programPackage.monitor.updateText("After enqueue");
         }
 
 
@@ -53,7 +107,7 @@ namespace TicketMonitor
         {
 
         }
-        internal void postCredentialsandGetSessionKey() // THis method posts credientials and grabs a session key.
+        internal void postCredentialsandGetSessionKey() // This method posts credientials and grabs a session key. Unused currently
         {
             try
             {
@@ -62,7 +116,15 @@ namespace TicketMonitor
 
                 response = (HttpWebResponse)web.GetResponse(); // Stores the response from the web request into response.
 
-                gatherData();
+                if (isFirstXmlLoaded == false)
+                {
+                    xml = gatherData();
+                    isFirstXmlLoaded = true;
+                }
+                else
+                {
+                    compareXML = gatherData();
+                }
 
             }
             catch (Exception e)
@@ -89,17 +151,19 @@ namespace TicketMonitor
             }
         }
 
-        private void gatherData() //This function opens a stream with the class' web and response types.
+        private XmlDocument gatherData() //This function opens a stream with the class' web and response types. Makes into XML and pushes to queue.
         {
+            XmlDocument localXML = new XmlDocument();
             using (Stream stream = response.GetResponseStream())
             {
                 StreamReader reader = new StreamReader(stream);
                 string results = reader.ReadToEnd();
-                xml.LoadXml(results);
+                localXML.LoadXml(results);
                 reader.Close();
 
 
             }
+            return localXML;
         }
 
     }
