@@ -48,7 +48,7 @@ namespace TicketMonitor
                 }
 
 
-
+                
                     //programPackage.monitor.updateText(response.write(xml.OuterXml));
 
 
@@ -64,7 +64,7 @@ namespace TicketMonitor
         }
 
 
-        internal void getOpenHelpDeskTickets()
+        internal void getOpenHelpDeskTickets() //Will grab all open help desk tickets by group.
         {
             try
             {
@@ -91,7 +91,7 @@ namespace TicketMonitor
             }
             catch (Exception e)
             {
-                MessageBox.Show("An error occured requesting your data");
+                MessageBox.Show("An error occured requesting your data.");
                 Console.WriteLine(e);
                 Application.Exit();
             }
@@ -107,7 +107,7 @@ namespace TicketMonitor
         {
 
         }
-        internal void postCredentialsandGetSessionKey() // This method posts credientials and grabs a session key.
+        internal void postCredentialsandGetSessionKey() // This method posts credientials and grabs a session key. Unused currently
         {
             try
             {

@@ -53,19 +53,12 @@ namespace TicketMonitor
             }
 
             programPackage.monitor.setProgressBarMax(seconds);
-            /*
-            if (programPackage.monitor.apiSession.compareXML.ChildNodes.Count != 0)//Comaring the xml after a refresh.
-            {
-                compare(programPackage.monitor.apiSession.xml, programPackage.monitor.apiSession.compareXML); //Removes first in line but keeps second for further comparisons.
-            } */
 
-            // TESTING=============================================================================================================
             if (programPackage.monitor.apiSession.compareXML.ChildNodes.Count != 0)//Comaring the xml after a refresh.
             {
-                compare_Testing(programPackage.monitor.apiSession.xml, programPackage.monitor.apiSession.compareXML); //Removes first in line but keeps second for further comparisons.
+                compare(programPackage.monitor.apiSession.xml, programPackage.monitor.apiSession.compareXML); //Compare old to new
             }
 
-            // TESTING========================================================================================================================
             for (int i = 0; i < programPackage.monitor.progressBarMax(); i++) //Wait for 5 minutes and then refresh.
             {
                 Thread.Sleep(1000);
@@ -105,7 +98,7 @@ namespace TicketMonitor
             GC.Collect(); //manual garbage collection!
         }
 
-        private void compare_Testing(XmlDocument oldXML, XmlDocument newXML)
+        private void compare(XmlDocument oldXML, XmlDocument newXML)
         {
             programPackage.monitor.clearText();
             bool changeDetected = false;
@@ -188,7 +181,7 @@ namespace TicketMonitor
         }
 
 
-        private string convertXMLtoString(XmlDocument inXML)
+        private string convertXMLtoString(XmlDocument inXML) //Helper function to convert an XmlDocument to a string.
         {
             StringBuilder sb = new StringBuilder();
             XmlWriterSettings settings = new XmlWriterSettings
