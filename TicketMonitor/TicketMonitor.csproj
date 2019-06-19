@@ -79,6 +79,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API.cs" />
+    <Compile Include="newUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="newUser.Designer.cs">
+      <DependentUpon>newUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="option.cs" />
     <Compile Include="PageControl.cs">
       <SubType>Component</SubType>
@@ -99,12 +105,12 @@
       <DependentUpon>TicketMonitor.cs</DependentUpon>
     </Compile>
     <Compile Include="user.cs" />
+    <EmbeddedResource Include="newUser.resx">
+      <DependentUpon>newUser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="programPackage.resx">
       <DependentUpon>programPackage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="obj\Debug\TicketMonitor.programPackage.resources" />
-    <EmbeddedResource Include="obj\Debug\TicketMonitor.Properties.Resources.resources" />
-    <EmbeddedResource Include="obj\Debug\TicketMonitor.ticketMonitorFrame.resources" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -117,12 +123,6 @@
     <EmbeddedResource Include="TicketMonitor.resx">
       <DependentUpon>TicketMonitor.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="bin\Debug\TicketMonitor.exe.config" />
-    <None Include="obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
-    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
-    <None Include="obj\Debug\TicketMonitor.csproj.CoreCompileInputs.cache" />
-    <None Include="obj\Debug\TicketMonitor.csproj.GenerateResource.cache" />
-    <None Include="obj\Debug\TicketMonitor.csprojAssemblyReference.cache" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -137,17 +137,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="bin\Debug\TicketMonitor.exe" />
-    <Content Include="bin\Debug\TicketMonitor.pdb" />
-    <Content Include="obj\Debug\TicketMonitor.csproj.FileListAbsolute.txt" />
-    <Content Include="obj\Debug\TicketMonitor.exe" />
-    <Content Include="obj\Debug\TicketMonitor.pdb" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="bin\Release\" />
-    <Folder Include="obj\Debug\TempPE\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
       <Visible>False</Visible>

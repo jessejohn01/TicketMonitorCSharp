@@ -29,7 +29,7 @@ namespace TicketMonitor
 
         }
 
-        internal void getRequest(string url) //method to run a get on the API's url.
+        internal bool getRequest(string url) //method to run a get on the API's url. Returns a bool, true if successful, false otherwise.
         {
             try
             {
@@ -48,16 +48,17 @@ namespace TicketMonitor
                 }
 
 
-                
-                    //programPackage.monitor.updateText(response.write(xml.OuterXml));
+
+                //programPackage.monitor.updateText(response.write(xml.OuterXml));
 
 
-
+                return true;
             }
             catch (Exception e)
             {
                 MessageBox.Show("An error occured requesting your data");
                 Console.WriteLine(e);
+                return false;
             }
 
             //programPackage.monitor.printXML(xml);

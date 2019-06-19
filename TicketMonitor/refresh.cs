@@ -152,9 +152,9 @@ namespace TicketMonitor
                                 {
                                    // Console.WriteLine("There is no changes detected in this ticket.");
                                 }
-                            }catch(Exception e)
+                            }catch(Exception)
                             {
-                                Console.WriteLine(e);
+                                
                             }
 
                         
