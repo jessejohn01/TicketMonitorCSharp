@@ -79,6 +79,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API.cs" />
+    <Compile Include="newUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="newUser.Designer.cs">
+      <DependentUpon>newUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="option.cs" />
     <Compile Include="PageControl.cs">
       <SubType>Component</SubType>
@@ -99,6 +105,9 @@
       <DependentUpon>TicketMonitor.cs</DependentUpon>
     </Compile>
     <Compile Include="user.cs" />
+    <EmbeddedResource Include="newUser.resx">
+      <DependentUpon>newUser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="programPackage.resx">
       <DependentUpon>programPackage.cs</DependentUpon>
     </EmbeddedResource>
