@@ -13,20 +13,21 @@ namespace TicketMonitor
 {
     public partial class newUser : Form
     {
-        public newUser()
+        public newUser()//Constructor for the new user class
         {
             InitializeComponent();
         }
 
-        private void newUser_FormClosing(object sender, EventArgs e)
+        private void newUser_FormClosing(object sender, EventArgs e) //If the user closes the form close the entire application.
         {
             Application.Exit();
         }
-
-        private void SaveButton_Click(object sender, EventArgs e)
+        
+        private void SaveButton_Click(object sender, EventArgs e) //Happens after the save button is clicked. Will authenticate API key and save it.
         {
             programPackage.user.setUsername(Environment.UserName);
             programPackage.user.setapiKey(apiKeyTextBox.Text);
+
             try
             {
                 bool loginSuccessful = false;
@@ -82,12 +83,12 @@ namespace TicketMonitor
 
         }
 
-        private void CancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e) //Cancels the new user window.
         {
             this.Hide();
         }
 
-        private List<String> getUserList()
+        private List<String> getUserList()//function to get the user list. 
         {
 
             List<String> userList = new List<String>();
@@ -114,7 +115,7 @@ namespace TicketMonitor
             return userList;
         }
 
-        private List<String> getApiKeyList()
+        private List<String> getApiKeyList()// function to get the apikey list from a file. 
         {
 
             List<String> apiKeyList = new List<String>();

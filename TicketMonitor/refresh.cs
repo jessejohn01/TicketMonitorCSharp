@@ -132,18 +132,22 @@ namespace TicketMonitor
                 {
                     if (newTicket.Attributes["id"].Value == oldTicket.Attributes["id"].Value)
                     {
-                        //Console.WriteLine("New ticket has a match with old ticket: " + newTicket.Attributes["id"].Value);
                         hasMatch = true;
-                        //Console.WriteLine("Checking if anything changed within the ticket.");
+                        string newTicketNote;
+                        string oldTicketNote;
                         try
                         {
-                            //Console.WriteLine("Reached");
-                            //Console.WriteLine(newTicket.SelectSingleNode("latestNote").SelectSingleNode("mobileListText").InnerText);
-                            string newTicketNote = newTicket.SelectSingleNode("latestNote").SelectSingleNode("mobileListText").InnerText;
-                            //Console.WriteLine(oldTicket.SelectSingleNode("latestNote").SelectSingleNode("mobileListText").InnerText);
-                            string oldTicketNote = oldTicket.SelectSingleNode("latestNote").SelectSingleNode("mobileListText").InnerText;
-
-                                if (newTicketNote != oldTicketNote)
+                            
+                            newTicketNote = newTicket.SelectSingleNode("latestNote").SelectSingleNode("mobileListText").InnerText;
+                            try //To prevent null reference when a new note comes in on a ticket with no notes originally.
+                            {
+                                oldTicketNote = oldTicket.SelectSingleNode("latestNote").SelectSingleNode("mobileListText").InnerText;
+                            }
+                            catch (Exception)
+                            {
+                                oldTicketNote = "";
+                            }
+                                if (newTicketNote != oldTicketNote && timeCheck(newTicket.SelectSingleNode("prettyLastUpdated").InnerText))
                                 {
                                     programPackage.monitor.updateText("Ticket " + newTicket.Attributes["id"].Value + " has a new note.");
                                     changeDetected = true;
@@ -154,7 +158,7 @@ namespace TicketMonitor
                                 }
                             }catch(Exception)
                             {
-                                
+                             //Skip this one since no notes.   
                             }
 
                         
@@ -196,6 +200,17 @@ namespace TicketMonitor
                 inXML.Save(writer);
             }
             return sb.ToString();
+        }
+
+        private bool timeCheck(string inTime) //Return true if last updated was within the last day. !Expects prettyLastUpdated tag! !!Format x minutes|hours|days|weeks|months|years ago!!
+        {
+            //This function prevents false positives when we have over 100 tickets and we close one and an old ticket is moved into the 100.
+            inTime = inTime.ToLower();
+            if(inTime.Contains("minutes") ||inTime.Contains("minute") ||inTime.Contains("hour") || inTime.Contains("hours") || inTime.Contains("moments ago"))
+            {
+                return true;
+            }
+            return false;
         }
 
 
