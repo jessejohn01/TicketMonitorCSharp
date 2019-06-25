@@ -164,7 +164,7 @@ namespace TicketMonitor
             updateText(sb.ToString());
         }
 
-        internal void clearText()
+        internal void clearText() //clears the text in the ticket monitor's output box.
         {
             try
             {
