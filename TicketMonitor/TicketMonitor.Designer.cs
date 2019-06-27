@@ -30,8 +30,6 @@
         {
             this.pages = new PageControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.getHelpDeskOpen = new System.Windows.Forms.Button();
-            this.debugGet = new System.Windows.Forms.Button();
             this.progressbarLabel = new System.Windows.Forms.Label();
             this.monitorOutputTextBox = new System.Windows.Forms.RichTextBox();
             this.progressBar = new System.Windows.Forms.ProgressBar();
@@ -43,6 +41,7 @@
             this.refreshTime = new System.Windows.Forms.ComboBox();
             this.optionSaveButton = new System.Windows.Forms.Button();
             this.refreshTimeLabel = new System.Windows.Forms.Label();
+            this.clearTextButton = new System.Windows.Forms.Button();
             this.pages.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -62,8 +61,7 @@
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.SteelBlue;
-            this.tabPage1.Controls.Add(this.getHelpDeskOpen);
-            this.tabPage1.Controls.Add(this.debugGet);
+            this.tabPage1.Controls.Add(this.clearTextButton);
             this.tabPage1.Controls.Add(this.progressbarLabel);
             this.tabPage1.Controls.Add(this.monitorOutputTextBox);
             this.tabPage1.Controls.Add(this.progressBar);
@@ -74,26 +72,6 @@
             this.tabPage1.Size = new System.Drawing.Size(808, 458);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
-            // 
-            // getHelpDeskOpen
-            // 
-            this.getHelpDeskOpen.Location = new System.Drawing.Point(140, 418);
-            this.getHelpDeskOpen.Name = "getHelpDeskOpen";
-            this.getHelpDeskOpen.Size = new System.Drawing.Size(117, 23);
-            this.getHelpDeskOpen.TabIndex = 16;
-            this.getHelpDeskOpen.Text = "Get Help Desk Open";
-            this.getHelpDeskOpen.UseVisualStyleBackColor = true;
-            this.getHelpDeskOpen.Click += new System.EventHandler(this.GetHelpDeskOpen_Click);
-            // 
-            // debugGet
-            // 
-            this.debugGet.Location = new System.Drawing.Point(46, 418);
-            this.debugGet.Name = "debugGet";
-            this.debugGet.Size = new System.Drawing.Size(75, 23);
-            this.debugGet.TabIndex = 15;
-            this.debugGet.Text = "Get Ticket 1";
-            this.debugGet.UseVisualStyleBackColor = true;
-            this.debugGet.Click += new System.EventHandler(this.DebugGet_Click_1);
             // 
             // progressbarLabel
             // 
@@ -212,13 +190,24 @@
             this.refreshTimeLabel.TabIndex = 11;
             this.refreshTimeLabel.Text = "Refresh Time";
             // 
+            // clearTextButton
+            // 
+            this.clearTextButton.Location = new System.Drawing.Point(31, 415);
+            this.clearTextButton.Name = "clearTextButton";
+            this.clearTextButton.Size = new System.Drawing.Size(75, 23);
+            this.clearTextButton.TabIndex = 15;
+            this.clearTextButton.Text = "Clear Text";
+            this.clearTextButton.UseVisualStyleBackColor = true;
+            this.clearTextButton.Click += new System.EventHandler(this.ClearTextButton_Click);
+            // 
             // ticketMonitorFrame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SteelBlue;
-            this.ClientSize = new System.Drawing.Size(800, 473);
+            this.ClientSize = new System.Drawing.Size(800, 465);
             this.Controls.Add(this.pages);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "ticketMonitorFrame";
             this.Text = "Ticket Monitor";
@@ -243,8 +232,6 @@
         private System.Windows.Forms.Button optionSaveButton;
         private System.Windows.Forms.Label refreshTimeLabel;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.Button getHelpDeskOpen;
-        private System.Windows.Forms.Button debugGet;
         private System.Windows.Forms.Label progressbarLabel;
         private System.Windows.Forms.RichTextBox monitorOutputTextBox;
         private System.Windows.Forms.ProgressBar progressBar;
@@ -252,5 +239,6 @@
         private System.Windows.Forms.ToolStripMenuItem commandsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem manualRefreshToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
+        private System.Windows.Forms.Button clearTextButton;
     }
 }
