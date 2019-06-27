@@ -15,6 +15,7 @@ namespace TicketMonitor
 
         internal static BackgroundWorker worker = new BackgroundWorker();
         private int progressBarTotal = 0;
+        internal bool reset = false;
         internal refresh()
         {
             worker.WorkerReportsProgress = true;
@@ -29,50 +30,62 @@ namespace TicketMonitor
             if (!worker.IsBusy)
             {
                 worker.RunWorkerAsync();
+                Console.WriteLine("Worker is busy");
             }
         }
            
         private void worker_DoWork(object sender, DoWorkEventArgs e) //This worker loads in the tickets.
         {
             int seconds;
-            programPackage.monitor.apiSession.getOpenHelpDeskTickets();
-            switch (programPackage.monitor.optionSettings.refreshTimeOption)
+            while (true)
             {
-                case "One Minute":
-                    seconds = 60;
-                    break;
-                case "Five Minutes":
-                    seconds = 300;
-                    break;
-                case "Ten Minutes":
-                    seconds = 600;
-                    break;
-                default:
-                    seconds = 300;
-                    break;
-            }
+                work:
+                programPackage.monitor.apiSession.getOpenHelpDeskTickets();
+                switch (programPackage.monitor.optionSettings.refreshTimeOption)
+                {
+                    case "One Minute":
+                        seconds = 60;
+                        break;
+                    case "Five Minutes":
+                        seconds = 300;
+                        break;
+                    case "Ten Minutes":
+                        seconds = 600;
+                        break;
+                    default:
+                        seconds = 300;
+                        break;
+                }
 
-            programPackage.monitor.setProgressBarMax(seconds);
+                programPackage.monitor.setProgressBarMax(seconds);
 
-            if (programPackage.monitor.apiSession.compareXML.ChildNodes.Count != 0)//Comaring the xml after a refresh.
-            {
-                compare(programPackage.monitor.apiSession.xml, programPackage.monitor.apiSession.compareXML); //Compare old to new
-            }
+                if (programPackage.monitor.apiSession.compareXML.ChildNodes.Count != 0)//Comaring the xml after a refresh.
+                {
+                    compare(programPackage.monitor.apiSession.xml, programPackage.monitor.apiSession.compareXML); //Compare old to new
+                }
 
-            for (int i = 0; i < programPackage.monitor.progressBarMax(); i++) //Wait for 5 minutes and then refresh.
-            {
-                Thread.Sleep(1000);
-                progressBarTotal++;
+                for (int i = 0; i < programPackage.monitor.progressBarMax(); i++) //Wait for 5 minutes and then refresh.
+                {
+                    Thread.Sleep(1000);
+                    progressBarTotal++;
+                    programPackage.monitor.updateProgress(progressBarTotal);
+
+                    if (worker.CancellationPending) //Checks to see if we need to kill the thread.
+                    {
+                        return;
+                    }
+                    if(reset == true) //Creates a reset. So it will just restart the timer.
+                    {
+                        reset = false;
+                        progressBarTotal = 0;
+                        programPackage.monitor.updateProgress(progressBarTotal);
+                        goto work;
+                    }
+                }
+                progressBarTotal = 0;
                 programPackage.monitor.updateProgress(progressBarTotal);
 
-                if (worker.CancellationPending) //Checks to see if we need to kill the thread.
-                {
-                    break;
-                }
             }
-
-            //Do work here.
-
 
 
 
@@ -81,13 +94,12 @@ namespace TicketMonitor
 
         private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            progressBarTotal = 0;
-            programPackage.monitor.updateProgress(progressBarTotal);
+
 
            
             if (!worker.IsBusy)
             {
-                programPackage.monitor.clearText();
+               // programPackage.monitor.clearText();
                 worker.RunWorkerAsync();
             }
         }
@@ -100,7 +112,7 @@ namespace TicketMonitor
 
         private void compare(XmlDocument oldXML, XmlDocument newXML)
         {
-            programPackage.monitor.clearText();
+            //programPackage.monitor.clearText();
             bool changeDetected = false;
             /*This next section grabs a list of Tickets from the xml. So it will have a list of all the tickets with all its child tags
              <Ticket id="123456" type="Ticket">
@@ -150,6 +162,7 @@ namespace TicketMonitor
                                 if (newTicketNote != oldTicketNote && timeCheck(newTicket.SelectSingleNode("prettyLastUpdated").InnerText))
                                 {
                                     programPackage.monitor.updateText("Ticket " + newTicket.Attributes["id"].Value + " has a new note.");
+                                    programPackage.monitor.printXML(programPackage.monitor.apiSession.getTicket(newTicket.Attributes["id"].Value));
                                     changeDetected = true;
                                 }
                                 else
@@ -167,6 +180,7 @@ namespace TicketMonitor
                 if (hasMatch == false)
                 {
                     programPackage.monitor.updateText("Ticket " + newTicket.Attributes["id"].Value + " is a new ticket. ");
+                    programPackage.monitor.printXML(programPackage.monitor.apiSession.getTicket(newTicket.Attributes["id"].Value));
                 }
                 hasMatch = false;
             }
@@ -182,24 +196,6 @@ namespace TicketMonitor
             }
             programPackage.monitor.apiSession.xml = programPackage.monitor.apiSession.compareXML;
 
-        }
-
-
-        private string convertXMLtoString(XmlDocument inXML) //Helper function to convert an XmlDocument to a string.
-        {
-            StringBuilder sb = new StringBuilder();
-            XmlWriterSettings settings = new XmlWriterSettings
-            {
-                Indent = true,
-                IndentChars = "  ",
-                NewLineChars = "\r\n",
-                NewLineHandling = NewLineHandling.Replace
-            };
-            using (XmlWriter writer = XmlWriter.Create(sb, settings))
-            {
-                inXML.Save(writer);
-            }
-            return sb.ToString();
         }
 
         private bool timeCheck(string inTime) //Return true if last updated was within the last day. !Expects prettyLastUpdated tag! !!Format x minutes|hours|days|weeks|months|years ago!!

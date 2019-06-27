@@ -22,8 +22,6 @@ namespace TicketMonitor
         internal ticketMonitorFrame()
         {
             InitializeComponent();
-            debugGet.Hide();
-            getHelpDeskOpen.Hide();
             
         }
 
@@ -34,16 +32,7 @@ namespace TicketMonitor
 
         private void TicketMonitorFrame_Load(object sender, EventArgs e)//Upon loading the main window.
         {
-
-            //apiSession.postCredentialsandGetSessionKey();
-            if(programPackage.user.getUsername() == "yaBoi") //Secret debugging user.
-            {
-                debugGet.Show();
-                getHelpDeskOpen.Show();
-            }
             background.start();
-
-
         }
 
         internal void updateText(string inString) //updates the text in the text box in the main window. 
@@ -119,33 +108,16 @@ namespace TicketMonitor
         {
             updateOptions();
             pages.SelectedTab = tabPage1;
-            background.stop();
-            background = new refresh();
-            background.start();
+            background.reset = true;
             updateProgress(0);
         }
 
         private void ManualRefreshToolStripMenuItem_Click_1(object sender, EventArgs e)//Click the manual refresh button up top.
         {
-            background.stop();
-            background = new refresh();
-            background.start();
+            background.reset = true;
             updateText("Manual Refresh Initiated.");
         }
 
-        private void DebugGet_Click_1(object sender, EventArgs e)// Click debugging button. Needs debugging username to see.
-        {
-            //clearText();
-            apiSession.getOpenHelpDeskTickets();          
-
-        }
-
-
-        private void GetHelpDeskOpen_Click(object sender, EventArgs e) // Click other debugging button. Needs username to see
-        {
-            clearText();
-            //apiSession.getRequest(url + "/ra/Tickets.xml?list=group&qualifier=(statustype.listFilterType%3D1)"); //API class will add a trailing &apiKey=****
-        }
 
         internal void printXML(XmlDocument inXML)//class to format and print an xml document to monitorOutputTextBox.
         {
@@ -163,7 +135,10 @@ namespace TicketMonitor
             }
             updateText(sb.ToString());
         }
-
+        private void ClearTextButton_Click(object sender, EventArgs e)
+        {
+            clearText();
+        }
         internal void clearText() //clears the text in the ticket monitor's output box.
         {
             try
@@ -178,5 +153,7 @@ namespace TicketMonitor
                 Console.WriteLine(e);
             }
         }
+
+
     }
 }

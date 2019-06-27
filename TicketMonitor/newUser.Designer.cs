@@ -81,6 +81,7 @@
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.apiKeyLabel);
             this.Controls.Add(this.apiKeyTextBox);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "newUser";
             this.Text = "New User";

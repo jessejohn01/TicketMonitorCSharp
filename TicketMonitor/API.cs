@@ -64,6 +64,32 @@ namespace TicketMonitor
             //programPackage.monitor.printXML(xml);
         }
 
+        internal XmlDocument getTicket(string ticketNumber)
+        {
+            XmlDocument requestedXML = new XmlDocument();
+            try
+            {
+                web = WebRequest.Create(startUrl + "/ra/Tickets/" + ticketNumber + ".xml?&apiKey=" + programPackage.user.getapiKey());
+                web.Method = "GET";
+                response = (HttpWebResponse)web.GetResponse();
+
+                requestedXML = gatherData();
+                return requestedXML;
+
+                //programPackage.monitor.updateText(response.write(xml.OuterXml));
+
+
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("An error occured requesting your data.");
+                Console.WriteLine(e);
+                Application.Exit();
+                return null;
+            }
+        }
+
 
         internal void getOpenHelpDeskTickets() //Will grab all open help desk tickets by group.
         {

@@ -68,6 +68,7 @@ namespace TicketMonitor
             this.ClientSize = new System.Drawing.Size(376, 486);
             this.Controls.Add(this.loginButton);
             this.Controls.Add(this.msuLogo);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "programPackage";
             this.Text = "Ticket Monitor Login";
